@@ -1,4 +1,4 @@
-use bevy::{prelude::*, render::{render_resource::{SamplerDescriptor, FilterMode}, camera::ScalingMode}, diagnostic::{LogDiagnosticsPlugin, FrameTimeDiagnosticsPlugin}, core::{Zeroable, Pod}};
+use bevy::{prelude::*, render::{render_resource::{SamplerDescriptor, FilterMode}, camera::ScalingMode}};
 use std::f32::consts::TAU;
 use bevy_inspector_egui::WorldInspectorPlugin;
 
