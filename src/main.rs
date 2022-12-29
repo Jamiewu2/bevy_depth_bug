@@ -1,10 +1,16 @@
 use bevy::{prelude::*, render::{render_resource::{SamplerDescriptor, FilterMode}, camera::ScalingMode}};
 use std::f32::consts::TAU;
-use bevy_inspector_egui::WorldInspectorPlugin;
+// use bevy_inspector_egui::WorldInspectorPlugin;
 
 //viewport dimensions in pixels
 const WIDTH: f32 = 1920.;
 const HEIGHT: f32 = 1080.;
+
+#[derive(Component)]
+struct Marker;
+
+#[derive(Component)]
+struct Marker2;
 
 fn main() {
     App::new()
@@ -33,8 +39,10 @@ fn main() {
             ..default()
         })
     )
-    .add_plugin(WorldInspectorPlugin::new())
+    // .add_plugin(WorldInspectorPlugin::new())
     .add_startup_system(setup)
+    .add_system(oscillate)
+    .add_system(oscillate2)
     .run();
 }
 
@@ -73,7 +81,17 @@ fn setup(
         //material: materials.add(cube_color.into()),
         transform: t.with_translation(Vec3::new(0.0,0.0,30.0)),
         ..default()
-    }).insert(Name::new("Cube2"));
+    }).insert(Name::new("Cube1"))
+    .insert(Marker);
+
+    commands.spawn(PbrBundle {
+        mesh: meshes.add(Mesh::from(shape::Cube { size: 60.0 })),
+        material: material_handle.clone(),
+        //material: materials.add(cube_color.into()),
+        transform: t.with_translation(Vec3::new(60.0,0.0,30.0)),
+        ..default()
+    }).insert(Name::new("Cube2"))
+    .insert(Marker2);
 
     // directional 'sun' light
     const HALF_SIZE: f32 = 1200.0;
@@ -133,4 +151,16 @@ fn setup_camera(mut commands: Commands) {
         }.into(),
         ..default()
     });
+}
+
+fn oscillate(time: Res<Time>, mut q: Query<&mut Transform, With<Marker>>) {
+    let mut transform = q.single_mut();
+    transform.translation.z = 30. + 60. * time.elapsed_seconds().sin();
+}
+
+
+
+fn oscillate2(time: Res<Time>, mut q: Query<&mut Transform, With<Marker2>>) {
+    let mut transform = q.single_mut();
+    transform.translation.y = 0. + 60. * time.elapsed_seconds().cos();
 }
