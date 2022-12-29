@@ -1,6 +1,6 @@
 use bevy::{prelude::*, render::{render_resource::{SamplerDescriptor, FilterMode}, camera::ScalingMode}};
 use std::f32::consts::TAU;
-// use bevy_inspector_egui::WorldInspectorPlugin;
+use bevy_inspector_egui::WorldInspectorPlugin;
 
 //viewport dimensions in pixels
 const WIDTH: f32 = 1920.;
@@ -39,7 +39,7 @@ fn main() {
             ..default()
         })
     )
-    // .add_plugin(WorldInspectorPlugin::new())
+    .add_plugin(WorldInspectorPlugin::new())
     .add_startup_system(setup)
     .add_system(oscillate)
     .add_system(oscillate2)
